@@ -1,5 +1,5 @@
 {
-  "name": "diff-worktree",
+  "name": "@xiefangqing/diff-worktree",
   "version": "0.8.0",
   "description": "CLI-launched local Git inspector",
   "type": "module",
@@ -11,6 +11,10 @@
     "dist",
     "docs/images"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "dev": "tsx src/cli/main.ts",
     "build": "pnpm run build:server && pnpm run build:frontend && node scripts/copy-frontend-dist.mjs",

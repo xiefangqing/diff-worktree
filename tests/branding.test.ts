@@ -19,7 +19,7 @@ describe("project branding", () => {
       name: string;
     };
 
-    expect(rootPackage.name).toBe("diff-worktree");
+    expect(rootPackage.name).toBe("@xiefangqing/diff-worktree");
     expect(rootPackage.bin).toEqual({ "diff-worktree": "dist/main.js" });
     expect(frontendPackage.name).toBe("diff-worktree-frontend");
     expect(readFile("src/cli/main.ts")).toContain('cac("diff-worktree")');

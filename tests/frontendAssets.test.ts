@@ -1,4 +1,5 @@
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
@@ -12,7 +13,7 @@ describe("resolveFrontendDistPath", () => {
     ]);
 
     const result = resolveFrontendDistPath(
-      "file:///pkg/dist/main.js",
+      pathToFileURL(path.resolve("/pkg/dist/main.js")).href,
       "/repo",
       (candidate) => existing.has(candidate),
     );
@@ -24,7 +25,7 @@ describe("resolveFrontendDistPath", () => {
     const existing = new Set([path.resolve("/pkg/src/frontend/dist")]);
 
     const result = resolveFrontendDistPath(
-      "file:///pkg/src/server/createServer.ts",
+      pathToFileURL(path.resolve("/pkg/src/server/createServer.ts")).href,
       "/repo",
       (candidate) => existing.has(candidate),
     );
@@ -34,7 +35,7 @@ describe("resolveFrontendDistPath", () => {
 
   it("returns undefined when no candidate exists", () => {
     const result = resolveFrontendDistPath(
-      "file:///pkg/dist/main.js",
+      pathToFileURL(path.resolve("/pkg/dist/main.js")).href,
       "/repo",
       () => false,
     );

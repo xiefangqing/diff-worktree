@@ -22,7 +22,7 @@
 Run this inside a Git repository:
 
 ```sh
-npx diff-worktree
+npx @xiefangqing/diff-worktree
 ```
 
 The command prints the local URL and opens the browser by default.
@@ -30,14 +30,14 @@ The command prints the local URL and opens the browser by default.
 You can also pass a repository path:
 
 ```sh
-npx diff-worktree /path/to/repo
+npx @xiefangqing/diff-worktree /path/to/repo
 ```
 
 Common options:
 
 ```sh
-npx diff-worktree --port 3000
-npx diff-worktree --no-open
+npx @xiefangqing/diff-worktree --port 3000
+npx @xiefangqing/diff-worktree --no-open
 ```
 
 | Option | Description |
@@ -58,6 +58,7 @@ npx diff-worktree --no-open
 
 ```sh
 pnpm install
+pnpm run build
 pnpm run dev
 ```
 
@@ -66,3 +67,32 @@ Build the package:
 ```sh
 pnpm run build
 ```
+
+## Publishing
+
+The npm package is `@xiefangqing/diff-worktree`. The installed command is `diff-worktree`.
+
+From the repository root, verify the package before publishing:
+
+```sh
+pnpm test
+pnpm run build
+npm pack --dry-run
+npm publish --dry-run
+```
+
+Confirm that the package contains `dist/main.js`, `dist/frontend/index.html`, and the frontend assets. Install the tarball in a temporary directory and check `diff-worktree --help`, `diff-worktree --version`, and startup against a Git repository with `--no-open`. Open the printed URL to verify branch listing and file diffs.
+
+Enable two-factor authentication (2FA) in the npm account settings before publishing. Log in to the official npm registry as `xiefangqing`, then publish:
+
+```sh
+npm login --registry=https://registry.npmjs.org/
+npm whoami --registry=https://registry.npmjs.org/
+npm publish
+npm view @xiefangqing/diff-worktree name version dist-tags --registry=https://registry.npmjs.org/
+npx --registry=https://registry.npmjs.org/ @xiefangqing/diff-worktree --help
+```
+
+`publishConfig` sets the official registry and public access. Publishing runs the build through `prepublishOnly`. Login alone is insufficient: npm rejects direct publishing without 2FA or a granular access token with bypass 2FA enabled. For manual releases, use 2FA and complete the authentication prompt.
+
+Before subsequent releases, update the version in both `package.json` and `src/cli/main.ts`. Published name/version pairs cannot be reused; fix a bad release by publishing a new version and deprecating the affected version when necessary.

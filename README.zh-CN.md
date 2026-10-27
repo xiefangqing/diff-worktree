@@ -20,7 +20,7 @@
 在 Git 仓库目录中运行：
 
 ```sh
-npx diff-worktree
+npx @xiefangqing/diff-worktree
 ```
 
 启动后会输出本地访问地址，并默认打开浏览器。
@@ -28,14 +28,14 @@ npx diff-worktree
 也可以指定仓库路径：
 
 ```sh
-npx diff-worktree /path/to/repo
+npx @xiefangqing/diff-worktree /path/to/repo
 ```
 
 常用参数：
 
 ```sh
-npx diff-worktree --port 3000
-npx diff-worktree --no-open
+npx @xiefangqing/diff-worktree --port 3000
+npx @xiefangqing/diff-worktree --no-open
 ```
 
 | 参数 | 说明 |
@@ -56,6 +56,7 @@ npx diff-worktree --no-open
 
 ```sh
 pnpm install
+pnpm run build
 pnpm run dev
 ```
 
@@ -64,3 +65,32 @@ pnpm run dev
 ```sh
 pnpm run build
 ```
+
+## 发布到 npm
+
+npm 包名为 `@xiefangqing/diff-worktree`，安装后的命令名为 `diff-worktree`。
+
+在仓库根目录执行发布前检查：
+
+```sh
+pnpm test
+pnpm run build
+npm pack --dry-run
+npm publish --dry-run
+```
+
+确认打包清单包含 `dist/main.js`、`dist/frontend/index.html` 和前端资源。在临时目录安装打包后的 tarball，检查 `diff-worktree --help`、`diff-worktree --version`，并用 `--no-open` 指定 Git 仓库验证启动。打开输出的地址，手动确认分支列表和文件差异正常显示。
+
+发布前先在 npm 账号设置中启用双因素认证（2FA）。登录 npm 官方源，确认账号为 `xiefangqing`，再发布：
+
+```sh
+npm login --registry=https://registry.npmjs.org/
+npm whoami --registry=https://registry.npmjs.org/
+npm publish
+npm view @xiefangqing/diff-worktree name version dist-tags --registry=https://registry.npmjs.org/
+npx --registry=https://registry.npmjs.org/ @xiefangqing/diff-worktree --help
+```
+
+`publishConfig` 已指定官方源和公开访问。发布时会通过 `prepublishOnly` 自动构建。仅登录账号还不够：未启用 2FA、也未使用允许绕过 2FA 的细粒度令牌时，npm 会拒绝直接发布。手动发布使用 2FA，并按提示完成认证即可。
+
+后续发布前，同步更新 `package.json` 和 `src/cli/main.ts` 中的版本号。已发布的包名与版本组合不能重复使用；发布出错时应修复后发布新版本，必要时将问题版本标记为弃用。

@@ -31,6 +31,8 @@ function runGit(cwd: string, args: string[]) {
 function configureUser(repoRoot: string) {
   runGit(repoRoot, ["config", "user.name", "Test User"]);
   runGit(repoRoot, ["config", "user.email", "test@example.com"]);
+  // Keep fixture line endings independent of the host Git configuration.
+  runGit(repoRoot, ["config", "core.autocrlf", "false"]);
 }
 
 function commitFile(repoRoot: string, filePath: string, content: string, message: string) {
