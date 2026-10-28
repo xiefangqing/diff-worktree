@@ -270,7 +270,7 @@ export function App() {
     const repoName = summary ? repoNameFromPath(summary.repoRoot) : undefined;
 
     if (repoName) {
-      document.title = `review: ${repoName}`;
+      document.title = `审查：${repoName}`;
     }
   }, [summary]);
 
