@@ -9,7 +9,7 @@ const cli = cac("diff-worktree");
 registerStartCommand(cli);
 
 cli.help();
-cli.version("0.8.0");
+cli.version("0.8.1");
 
 async function main() {
   cli.parse(process.argv, { run: false });
